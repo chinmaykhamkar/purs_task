@@ -1,0 +1,55 @@
+improvements - 
+1. current code uses const AWS = require('aws-sdk') which is version 2 for JS SDK. 
+   offical aws docs state the following "Loading the entire SDK isn’t an issue if 
+   your application is using many AWS services. However, if you need to use only a 
+   few AWS services, it means increasing the size of your application with code you 
+   don't need or use." Since in this application we are only using RDS we can opt for
+   individual aws service (@aws-sdk/client-rds)
+
+2. had to migrate from v2 aws sdk to v3 sdk by default
+3. creating seperate file for util functions like generate random binary which is easy for testing
+4. returns an Object instead of array 
+5. change the name from idObj to idObject
+6. should be payor on line 167 of espto.JS instead of dev
+7. change varible name for better understanding pursPayment
+8. paymentStatus change ternary operator from 4:5 to completed:pending
+9.
+
+
+refactor code -
+seperate function to generate randombinary
+seperate function to generate params object
+seperate function for RDS.ExecuteStatement
+seperate function for RDS.batchexecutestatment
+
+bugs - 
+
+
+unit tests - 
+
+
+
+things to look at - 
+https://docs.aws.amazon.com/rdsdataservice/latest/APIReference/API_ExecuteStatement.html
+https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/rds-data/command/ExecuteStatementCommand/
+https://stackoverflow.com/questions/69592200/how-to-mock-aws-rdsdataservice-methods
+https://www.lucasamos.dev/articles/jestmocking
+https://blog.chriscatt.com/jest-mocking-with-aws-sdk-v3
+
+
+things to do - 
+1. write unit tests for validation functions - done
+2. write unit tests for rds ExecuteStatement and batchexecutestatment - done
+3. write more unit tests for creating params - done
+4. write main unit test for the purs function (will probably require mocking) - done
+5. final readme
+ a. instructions to run the code
+ b. assumtions
+ c. reasoning => improved what, which file is for what, coding decisions
+ d. which bugs or errors were addressed
+
+
+
+
+
+
