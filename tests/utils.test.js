@@ -19,15 +19,18 @@ describe('test cases for callRDSService function', () => {
     // to be 'Sucessful execution of SQL statement' which is what we expect
     test('should handle successful execution of callRDSService function', async () => {
         utils.callRDSService.mockReturnValue(Promise.resolve("Sucessful execution of SQL statement"));
+
         const response = await utils.callRDSService({});
         expect(response).toBe('Sucessful execution of SQL statement');
     });
 
     // test the callRDSService function which returns an error
     test('should handle error condtion of callRDSService function', async () => {
+
         // similar to the above test we mock the callRDSService function to return an error
         const error = new Error('Error executing SQL statement');
         utils.callRDSService.mockReturnValue(error);
+
         const response = await utils.callRDSService({});
         expect(response).toBe(error);
     });
@@ -35,21 +38,24 @@ describe('test cases for callRDSService function', () => {
 
 /*test cases to test the callRDSBatchService function which in turn calls the BatchExecuteStatementCommand from AWS RDS*/
 describe('test cases for callRDSBatchService function', () => {
-    
+
     // test the callRDSBatchService function with sucessful execution
     // note - in this test we pass an empty object to callRDSBatchService and mock its return value 
     // to be 'Sucessful execution of batch SQL statement' which is what we expect
     test('should handle successful execution of callRDSBatchService function', async () => {
         utils.callRDSBatchService.mockReturnValue(Promise.resolve("Sucessful execution of batch SQL statement"));
+
         const response = await utils.callRDSBatchService({});
         expect(response).toBe('Sucessful execution of batch SQL statement');
     });
 
     // test the callRDSBatchService function which returns an error
     test('should handle error condtion of callRDSBatchService function', async () => {
+
         // similar to the above test we mock the callRDSBatchService function to return an error
         const error = new Error('Error executing SQL statement');
         utils.callRDSBatchService.mockReturnValue(error);
+
         const response = await utils.callRDSBatchService({});
         expect(response).toBe(error);
     });
@@ -62,6 +68,7 @@ describe('test cases for generateRandomBinary function', () => {
     test('generates a binary string of the correct length', () => {
         const length = 10;
         const result = utils.generateRandomBinary(length);
+
         expect(result.length).toBe(length);
     });
 
@@ -70,6 +77,7 @@ describe('test cases for generateRandomBinary function', () => {
         const length = 10;
         const result = utils.generateRandomBinary(length);
         const isValidBinary = /^[01]+$/.test(result);
+
         expect(isValidBinary).toBe(true);
     });
 
@@ -77,12 +85,14 @@ describe('test cases for generateRandomBinary function', () => {
     test('generates a binary string with length zero', () => {
         const length = 0;
         const result = utils.generateRandomBinary(length);
+
         expect(result).toBe('');
     })
 
     // test to handle non-integer values
     test('handles non-integer values', () => {
         const result = utils.generateRandomBinary('string_input');
+
         expect(result).toBe('');
     })
 });
@@ -92,6 +102,7 @@ describe('test cases generateParameters', () => {
 
     //test to check if parameters are valid inputs
     test('generates parameters with valid inputs', () => {
+
         const parameters = utils.generateParameters(
             'payor', //payor
             'payee', //payee
@@ -113,24 +124,26 @@ describe('test cases generateParameters', () => {
                 { name: 'ledgerId', value: { blobValue: expect.any(Buffer) } },
                 { name: 'developerId', value: { blobValue: expect.any(Buffer) } },
                 { name: 'paymentMethod', value: { doubleValue: 0 } },
-                { name: 'paymentStatus', value: { doubleValue: 'pending' } }),
+                { name: 'paymentStatus', value: { stringValue: 'pending' } }),
         ]));
     });
 
     // generates paymentStatus === completed based on values of paymentMethod(!==0) or amount(===0)
     test('generates correct paymentStatus based on values of paymentMethod and amount', () => {
+
         const parameters = utils.generateParameters(
             'payor',
             'payee',
             100,
-            0, 
+            0,
             'paymentID',
             1, //paymentMethod set to 1                                               
             'ledgerEntryID',
             'dev');
+
         expect(parameters).toHaveLength(10);
         expect(parameters).toEqual(expect.arrayContaining([
-            expect.objectContaining({ name: 'paymentStatus', value: { doubleValue: 'completed' } }),
+            expect.objectContaining({ name: 'paymentStatus', value: { stringValue: 'completed' } }),
         ]));
     });
     // test cases for invalid input tested in the next test
@@ -150,6 +163,7 @@ describe('test cases validateInput', () => {
             0,
             'ledgerEntryID',
             'dev');
+
         expect(parameters).toEqual({ flag: false, error: "amount parameter must be a number" });
     });
 
@@ -163,6 +177,7 @@ describe('test cases validateInput', () => {
             3, //paymentMethod is not a binary number                                                   
             'ledgerEntryID',
             'dev');
+
         expect(parameters).toEqual({ flag: false, error: "paymentMethod parameter must be 0 or 1" });
     });
 });
@@ -177,8 +192,10 @@ describe('test cases generateFedNowParameters', () => {
             'fedNowPaymentID',
             'payorBankAccountID',
             'payeeBankAccountID');
+            
         expect(parameters).toEqual(expect.arrayContaining([
-            expect.objectContaining({ name: 'fedNowPaymentId', value: { blobValue: expect.any(Buffer) } },
+            expect.objectContaining(
+                { name: 'fedNowPaymentId', value: { blobValue: expect.any(Buffer) } },
                 { name: 'payorBankAccountID', value: { blobValue: expect.any(Buffer) } },
                 { name: 'payeeBankAccountID', value: { blobValue: expect.any(Buffer) } }),
         ]));
@@ -195,6 +212,7 @@ describe('test cases validateFedNowInput', () => {
             'fedNowPaymentID',
             100, // payorBankAccountID as integer
             'payeeBankAccountID');
+
         expect(parameters).toEqual({ flag: false, error: "payorBankAccountID parameter must be a string" });
     });
 
@@ -203,6 +221,7 @@ describe('test cases validateFedNowInput', () => {
             100, //fedNowPaymentID as integer
             'payorBankAccountID',
             'payeeBankAccountID');
+
         expect(parameters).toEqual({ flag: false, error: "fedNowPaymentID parameter must be a string" });
     });
 
@@ -211,6 +230,7 @@ describe('test cases validateFedNowInput', () => {
             'fedNowPaymentID',
             'payorBankAccountID',
             100); //payeeBankAccountID as integer
+
         expect(parameters).toEqual({ flag: false, error: "payeeBankAccountID parameter must be a string" });
     });
 });
@@ -247,6 +267,7 @@ describe('test cases validateLedgerEntryInput', () => {
 
     // test to check parameters with invalid inputs
     test('payor value is not a string', () => {
+        
         const parameters = utils.validateLedgerEntryInput(
             100, //payor as integer
             'payee',
@@ -254,10 +275,12 @@ describe('test cases validateLedgerEntryInput', () => {
             0,
             'ledgerEntryID',
             'dev');
+            
         expect(parameters).toEqual({ flag: false, error: "payor parameter must be a string" });
     });
 
     test('promoAmount value is not a number', () => {
+
         const parameters = utils.validateLedgerEntryInput(
             'payor',
             'payee',
@@ -265,6 +288,7 @@ describe('test cases validateLedgerEntryInput', () => {
             0,
             'ledgerEntryID',
             'dev');
+
         expect(parameters).toEqual({ flag: false, error: "promoAmount parameter must be a number" });
     });
 });
@@ -277,6 +301,7 @@ describe('test cases generatePursPaymentParameters', () => {
     test('generates PursPaymentParameters with valid inputs', () => {
         const parameters = utils.generatePursPaymentParameters(ledgeEntries, //ledgeEntries
             'pursTransactionID'); //pursTransactionID
+
         expect(parameters).toHaveLength(3);
         expect(parameters).toEqual(expect.arrayContaining([
             expect.arrayContaining([
@@ -285,9 +310,10 @@ describe('test cases generatePursPaymentParameters', () => {
             ])
         ]));
     });
-    
+
     // test case with invalid input
     test('pursTransactionID value is not a string', () => {
+        
         expect(() => {
             utils.generatePursPaymentParameters(ledgeEntries, 100) // pursTransactionID as integer
         }).toThrowError('pursTransactionID must be a string');

@@ -39,7 +39,7 @@ const callRDSBatchService = async (params) => {
 
 }
 
-/*function to validate input parameters 
+/**function to validate input parameters 
  * @param {string} payor
  * @param {string} payee
  * @param {integer} amount
@@ -117,7 +117,7 @@ const validateInput = (
     return validateParameters;
 }
 
-/*function to validate fed now input parameters 
+/**function to validate fed now input parameters 
  * @param {string} fedNowPaymentID
  * @param {string} payorBankAccountID
  * @param {integer} payeeBankAccountID
@@ -149,7 +149,7 @@ const validateFedNowInput = (
     return validateFedNowParameters;
 }
 
-/*function to validate ledger entry input parameters 
+/**function to validate ledger entry input parameters 
  * @param {string} payor
  * @param {string} payee
  * @param {integer} promoAmount
@@ -287,7 +287,7 @@ const generateParameters = (
         { name: 'paymentMethod', value: { doubleValue: paymentMethod } },
         // the status is set to "completed" if the payment is a card or if the amount is 0;
         // otherwise the status is set to pending(ie. fedNow)
-        { name: 'paymentStatus', value: { doubleValue: paymentMethod !== 0 || amount === 0 ? "completed" : "pending" } },
+        { name: 'paymentStatus', value: { stringValue: paymentMethod !== 0 || amount === 0 ? "completed" : "pending" } },
     )
     return parameters;
 }
@@ -385,7 +385,7 @@ const generateLedgerEntryParameters = (
 const generatePursPaymentParameters = (
     ledgeEntries,
     pursTransactionID) => {
-        
+
     if (typeof pursTransactionID !== 'string') {
         throw new Error('pursTransactionID must be a string')
     }
@@ -398,12 +398,12 @@ const generatePursPaymentParameters = (
 }
 
 module.exports = {
+    callRDSService,
+    callRDSBatchService,
     validateInput,
     validateFedNowInput,
     validateLedgerEntryInput,
     generateRandomBinary,
-    callRDSService,
-    callRDSBatchService,
     generateParameters,
     generateFedNowParameters,
     generateLedgerEntryParameters,

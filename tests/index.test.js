@@ -4,7 +4,7 @@ const utils = require('../utils');
 //mocking all the functions from index.js
 jest.mock('../utils');
 
-// mocking the main executeStandardPTOperations function
+// test cases for the main executeStandardPTOperations function
 describe('test cases for executeStandardPTOperations function', () => {
 
     beforeEach(() => {
@@ -34,10 +34,13 @@ describe('test cases for executeStandardPTOperations function', () => {
         const promotionInformation = {
             promoAmount: 0
         };
+        
         utils.generateRandomBinary.mockReturnValueOnce('101011010');
+
         const response = await index.executeStandardPTOperations(userPurchaseInformation,
             promotionInformation,
             sqlTransactionID);
+
         expect(response).toBeInstanceOf(Object);
     });
 
@@ -50,6 +53,7 @@ describe('test cases for executeStandardPTOperations function', () => {
         const promotionInformation = {
             promoAmount: 0
         };
+
         utils.generateRandomBinary
             .mockReturnValueOnce('1010110') //primaryPaymentID
             .mockReturnValueOnce('0101101') //customerLedgerEntryID
@@ -82,6 +86,7 @@ describe('test cases for executeStandardPTOperations function', () => {
         const promotionInformation = {
             promoAmount: 100 // promoAmount non zero
         };
+
         utils.generateRandomBinary
             .mockReturnValueOnce('1010110') //primaryPaymentID
             .mockReturnValueOnce('0101101') //customerLedgerEntryID
@@ -110,12 +115,13 @@ describe('test cases for executeStandardPTOperations function', () => {
     /*test to check the correct number of various function
     *calls with only promoAmount > 0
     */
-    test('test to check the count of function calls with only promoAmount > 0 and returned object', async () => {
+    test('test to check the count of function calls with only promoAmount > 0 and correct returned object', async () => {
 
         const promotionInformation = {
             promoAmount: 100
         };
         userPurchaseInformation.amount = 0;
+
         utils.generateRandomBinary
             .mockReturnValueOnce('1010110') //primaryPaymentID
             .mockReturnValueOnce('0101101') //customerLedgerEntryID
@@ -140,12 +146,13 @@ describe('test cases for executeStandardPTOperations function', () => {
     });
 
     /*test to check the correct number of various function with no special case*/
-    test('test to check the count of function calls with no special case and returned object', async () => {
+    test('test to check the count of function calls with no special case and correct returned object', async () => {
 
         const promotionInformation = {
             promoAmount: 0
         };
-        userPurchaseInformation.amount = 0;
+        userPurchaseInformation.amount = 0; //change amount value to 0
+
         utils.generateRandomBinary
             .mockReturnValueOnce('1010110') //primaryPaymentID
             .mockReturnValueOnce('0101101') //customerLedgerEntryID
