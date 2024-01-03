@@ -16,7 +16,7 @@
 - I have assumed that the call to AWS RDS service is a valid one and mocked this call accordingly in the unit tests.
 ### Bug fixes, Improvements and design decisions
 - I have used AWS-SDK V3 while implementing this as AWS has encouraged developers to switch from V2 to V3.
-- The major change from V2 to V3 is that in V2 the entire AWS module is imported with ``` const AWS = require('aws-sdk') ``` whereas in V3 ``` const { RDSDataClient, ExecuteStatementCommand } = require('@aws- 
+- The major change from V2 to V3 is that in V2 the entire AWS module is imported with ``` const AWS = require('aws-sdk') ``` whereas in V3 its ``` const { RDSDataClient, ExecuteStatementCommand } = require('@aws- 
   sdk/client-rds-data') ``` so importing only the necessary packages. This decreases the size of the application and in turn could give performance improvements at scale.
 - I have created a separate file ``` utils.js ``` which has all the helper functions used in ``` index.js ```. The reason to do this is to make code clean, readable and maintainable by reducing big blocks of code
   to function calls.
