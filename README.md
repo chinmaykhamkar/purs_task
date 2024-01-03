@@ -28,6 +28,12 @@
 - NIT :- on line 167 of ```espto.js```, for ````name:'payerId'``` the blobValue should take value ```payor``` instead of ```dev``` so I have made that change
 - On line 115, and 116 of ```espto.js```, it is mentioned that value of paymentStatus is set to 'completed' or 'pending' but in the ternary operator is ```4:5```. So changed that line from
   ```doubleValue: paymentMethod !== 0 || amount === 0 ? 4 : 5``` to ```stringValue: paymentMethod !== 0 || amount === 0 ? "completed" : "pending"```
+- I have mainly used functions for four purposes,
+  - to generate parameters that are used while making the AWS RDS call
+  - to validate these parameters if they are of correct datatype
+  - to make the AWS RDS call (there are 2 cases here, one for ```executeStatement``` and one for ```batchExecuteStatement```
+  - to generate random binary string
+- Unit tests involve testing these functions under various senarios
 
 
   
