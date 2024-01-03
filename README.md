@@ -31,7 +31,7 @@
 - I have mainly used functions for four purposes,
   - to generate parameters that are used while making the AWS RDS call
   - to validate these parameters if they are of correct datatype
-  - to make the AWS RDS call (there are 2 cases here, one for ```executeStatement``` and one for ```batchExecuteStatement```
+  - to make the AWS RDS call (there are 2 cases here, one for ```executeStatement``` and one for ```batchExecuteStatement```)
   - to generate random binary string
 - Unit tests involve testing these functions under various senarios
 
