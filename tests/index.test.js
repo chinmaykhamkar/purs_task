@@ -1,8 +1,8 @@
-const index = require('./index');
-const utils = require('./utils');
+const index = require('../index');
+const utils = require('../utils');
 
 //mocking all the functions from index.js
-jest.mock('./utils');
+jest.mock('../utils');
 
 // mocking the main executeStandardPTOperations function
 describe('test cases for executeStandardPTOperations function', () => {

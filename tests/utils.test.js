@@ -1,9 +1,9 @@
-const utils = require('./utils');
+const utils = require('../utils');
 
 // mocking the callRDSService and callRDSBatchService functions
 // and keeping the rest of the functions as they are from utils.js
-jest.mock('./utils.js', () => {
-    const original = jest.requireActual('./utils.js');
+jest.mock('../utils.js', () => {
+    const original = jest.requireActual('../utils.js');
     return {
         ...original,
         callRDSService: jest.fn(),
